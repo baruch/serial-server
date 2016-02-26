@@ -13,8 +13,10 @@
 #include <string.h>
 #include <sys/types.h>          /* See NOTES */
 #include <sys/socket.h>
+#include <stdio.h>
 
 #define TCP_POOL_SIZE 64
+#define LISTEN_PORT 9090
 
 static wire_t tcp_wire_listen;
 static wire_pool_t tcp_pool;
@@ -92,13 +94,15 @@ static void do_tcp_listen(void *arg)
 {
 	int fd;
 
-	fd = socket_setup(9090);
+	fd = socket_setup(LISTEN_PORT);
 	if (fd < 0)
 		return;
 
 	wire_fd_state_t fd_state;
 	wire_fd_mode_init(&fd_state, fd);
 	wire_fd_mode_read(&fd_state);
+
+	printf("Listening on port %d\n", LISTEN_PORT);
 
 	while (1) {
 		wire_fd_wait(&fd_state);
