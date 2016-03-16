@@ -20,6 +20,7 @@ static int serial_fd;
 static wire_lock_t write_lock;
 
 #define MSG_SERIAL_DOWN "Serial down\n"
+#define MSG_SERIAL_UP "Serial up\n"
 
 static void do_serial_wire_read(void *arg);
 
@@ -55,6 +56,7 @@ static void do_serial_wire_read(void *arg)
 			wire_fd_wait_msec(1000);
 			continue;
 		}
+		tcp_write(MSG_SERIAL_UP, strlen(MSG_SERIAL_UP));
 
 		wire_fd_mode_init(&fdstate, serial_fd);
 		wire_fd_mode_read(&fdstate);
